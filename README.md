@@ -4,11 +4,55 @@
 
 ---
 
+## 📋 Table of Contents
+
+- [Executive Summary](#-executive-summary)
+- [Quick Start](#-quick-start)
+- [Key Features](#-key-features)
+- [Dual Interface Architecture](#-dual-interface-architecture)
+- [System Architecture](#️-system-architecture)
+- [Technology Stack](#️-technology-stack)
+- [Project Roadmap](#️-project-roadmap)
+- [Repository Structure](#-repository-structure)
+- [Automated CI Pipeline](#️-automated-ci-pipeline)
+- [Development & Contribution](#-development--contribution-guidelines)
+- [Security Governance](#️-security-governance--anti-backdoor-controls)
+- [Discussions & Team Communication](#-discussions--team-communication)
+- [License & Conduct](#-license--conduct)
+
+---
+
 ## 📌 Executive Summary
 
 The modern off-campus recruitment ecosystem is broken for both job seekers and hiring managers. Passive job boards flood recruiters with thousands of unvetted, irrelevant applications, leading to recruiter fatigue, high drop-off rates, and systemic **candidate ghosting**.
 
-**HireSync** (or TalentPulse ATS) is an integrated, end-to-end off-campus recruitment middleware. The platform unifies upstream eligibility gatekeeping, automated ATS resume parsing, native skill assessments, embedded WebRTC video interviewing, and automated Service-Level Agreement (SLA) decision enforcement under a single web ecosystem.
+**HireSync** is an integrated, end-to-end off-campus recruitment middleware. The platform unifies upstream eligibility gatekeeping, automated ATS resume parsing, native skill assessments, embedded WebRTC video interviewing, and automated Service-Level Agreement (SLA) decision enforcement under a single web ecosystem.
+
+---
+
+## ⚡ Quick Start
+
+> Full setup instructions: **[SETUP.md](SETUP.md)**
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/TUSHAR91316/HireSync.git
+cd HireSync
+
+# 2. Install dependencies
+npm install
+
+# 3. Configure environment variables
+cp .env.example .env
+
+# 4. Run pre-commit verification scripts
+npm run format
+npm run security:scan
+npm run test
+
+# 5. Checkout your assigned branch
+git checkout feature/your-assigned-branch
+```
 
 ---
 
@@ -17,29 +61,44 @@ The modern off-campus recruitment ecosystem is broken for both job seekers and h
 ### 1. Upstream Eligibility Gatekeeper
 
 - **Hard Filters**: Locks application buttons based on experience, graduation batch year, degree stream, and maximum notice period.
-- **Skill-Based Unlock**: Enables candidates who fall slightly below experience thresholds (e.g., 1.5 years vs. 2 years) to attempt timed skill tests to unlock their application.
+- **Skill-Based Unlock**: Enables candidates within 15% of the experience threshold to attempt timed skill tests to unlock their application.
 
 ### 2. Automated ATS Engine & Resume Parser
 
 - **PDF Document Parsing**: Extracts structured data (work history, skills, education, contact details) from uploaded PDF resumes.
-- **Algorithmic Match Scoring**: Calculates weighted percentage match scores by comparing job description requirements against candidate profile metrics.
-- **Automated Candidate Tiering**: Categorizes applicants into **Tier-1** (Ideal Match), **Tier-2** (Conditional / Assessment), and **Tier-3** (Ineligible).
+- **Algorithmic Match Scoring**: Calculates weighted percentage match scores comparing job description requirements against candidate profiles.
+- **Automated Candidate Tiering**: Categorizes applicants into **Tier-1** (≥80%, Ideal Match), **Tier-2** (60–79%, Conditional), and **Tier-3** (<60%, Ineligible).
 
 ### 3. Integrated In-App Assessment & WebRTC Interviewing
 
-- **Native Testing Engine**: Serves auto-graded multiple-choice and short-form skill tests directly within the candidate dashboard.
-- **Embedded Video Interviewing**: Built-in WebRTC video rooms allow recruiters to conduct live interviews with real-time evaluation scorecards right next to the video frame.
+- **Native Testing Engine**: Serves auto-graded multiple-choice and short-form skill tests within the candidate dashboard.
+- **Embedded Video Interviewing**: Built-in WebRTC video rooms with real-time recruiter evaluation scorecards alongside the live video frame.
 
 ### 4. Live Application Status Tracking
 
-- Provides candidates with a real-time, stage-by-stage pipeline tracker:
-  $$\text{Applied} \longrightarrow \text{Screened} \longrightarrow \text{Assessment} \longrightarrow \text{Interview} \longrightarrow \text{Decision}$$
-- Displays maximum estimated waiting times for each stage for complete transparency.
+- Real-time, stage-by-stage pipeline tracker: **Applied → Screened → Assessment → Interview → Decision**
+- Maximum estimated waiting times displayed per stage for complete candidate transparency.
 
 ### 5. Recruiter Decision SLA Engine
 
-- Implements a background timer (e.g., 7 days) upon assessment or interview completion.
-- Triggers automated alerts to recruiters as deadlines approach and executes fallback actions (releasing polite rejection/feedback emails) if no manual decision is made before timer expiration.
+- Background Redis + BullMQ timer activated upon interview completion.
+- T-48h and T-24h countdown alerts sent to recruiters.
+- Automated polite rejection email triggered on SLA deadline expiry without recruiter action.
+
+---
+
+## 💻 Dual Interface Architecture
+
+HireSync serves two distinct user role portals:
+
+| 🧑‍💻 Candidate Portal                | 🏢 HR / Company Portal                      |
+| :--------------------------------- | :------------------------------------------ |
+| Profile & resume upload            | Job posting creation (eligibility criteria) |
+| Job search with eligibility badges | ATS applicant pool (Tier 1/2/3 view)        |
+| Skill Unlock timed test            | Candidate test scorecards                   |
+| In-app skill assessment            | WebRTC interview room + evaluation rubric   |
+| Live pipeline status tracker       | SLA countdown alert center                  |
+| Candidate WebRTC video room        | Automated fallback action management        |
 
 ---
 
@@ -48,42 +107,36 @@ The modern off-campus recruitment ecosystem is broken for both job seekers and h
 HireSync is built using a **Three-Tier Web Application Architecture**:
 
 ```
-+-------------------------------------------------------------------+
-|                   CLIENT LAYER (PRESENTATION)                     |
-|      React.js / Next.js Web Interface (Candidate & HR Dashboards) |
-+---------------------------------+---------------------------------+
-                                  |
-                                  v
-+-------------------------------------------------------------------+
-|                 APPLICATION LAYER (BACKEND API)                   |
-|        Node.js (Express) / Python (FastAPI) Web Framework         |
-|                                                                   |
-|  +-----------------------+     +-------------------------------+  |
-|  | Resume Parsing Engine |     | Candidate Eligibility Module  |  |
-|  +-----------------------+     +-------------------------------+  |
-|  | WebRTC Video Services |     | Assessment Evaluation Engine  |  |
-|  +-----------------------+     +-------------------------------+  |
-+---------------------------------+---------------------------------+
-                                  |
-                                  v
-+-------------------------------------------------------------------+
-|                DATA & BACKGROUND SERVICES LAYER                   |
-|                                                                   |
-|  +-----------------------+     +-------------------------------+  |
-|  | PostgreSQL Database   |     | Redis Queue + BullMQ Worker   |  |
-|  | (Relational Storage)  |     | (SLA Timers & Email Workers)  |  |
-|  +-----------------------+     +-------------------------------+  |
-+-------------------------------------------------------------------+
+┌─────────────────────────────────────────────────────────────────┐
+│                  PRESENTATION LAYER (CLIENT)                    │
+│  🧑‍💻 Candidate Portal           🏢 HR / Recruiter Portal        │
+│        (Next.js / React)              (Next.js / React)         │
+└─────────────────────────┬───────────────────────────────────────┘
+                          │
+┌─────────────────────────▼───────────────────────────────────────┐
+│                 APPLICATION LAYER (BACKEND API)                  │
+│   Node.js (Express) / Python (FastAPI)                          │
+│                                                                  │
+│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐ │
+│  │  Auth & RBAC    │  │  ATS Parser     │  │  SLA BullMQ     │ │
+│  │  Middleware     │  │  Engine         │  │  Queue Worker   │ │
+│  └─────────────────┘  └─────────────────┘  └─────────────────┘ │
+│  ┌─────────────────┐  ┌─────────────────┐                       │
+│  │  Eligibility    │  │  WebRTC         │                       │
+│  │  Gatekeeper     │  │  Signaling      │                       │
+│  └─────────────────┘  └─────────────────┘                       │
+└─────────────────────────┬───────────────────────────────────────┘
+                          │
+┌─────────────────────────▼───────────────────────────────────────┐
+│                    DATA & SERVICES LAYER                         │
+│  ┌──────────────────────┐    ┌──────────────────────────────┐   │
+│  │  PostgreSQL Database  │    │  Redis + BullMQ Queue        │   │
+│  │  (Relational Store)   │    │  (SLA Timers & Email Workers)│   │
+│  └──────────────────────┘    └──────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
-### Data Flow Sequence
-
-1. **Recruiter** posts a job with minimum eligibility criteria, evaluation weightages, and SLA window.
-2. **Candidate** views filtered job listings matching their profile parameters.
-3. Candidate submits resume $\rightarrow$ **ATS Engine** parses file and generates a match score.
-4. Candidates in Tier-1 or Tier-2 receive an **in-app assessment**.
-5. Upon passing, a **WebRTC video interview** slot is scheduled.
-6. **SLA Background Worker** monitors decision timers and sends notifications or triggers automated fallback outcomes.
+Full schema tables, API route map, and data flow diagrams: **[ARCHITECTURE.md](ARCHITECTURE.md)**
 
 ---
 
@@ -113,16 +166,54 @@ HireSync is built using a **Three-Tier Web Application Architecture**:
 
 ---
 
+## 📁 Repository Structure
+
+```
+HireSync/
+├── src/
+│   ├── components/
+│   │   ├── candidate/          # 🧑‍💻 Candidate Portal UI components
+│   │   ├── hr/                 # 🏢 HR / Recruiter Portal UI components
+│   │   └── common/             # Shared UI components (Navbar, Sidebar, Badges)
+│   ├── services/               # ATS Parser, Redis SLA Worker, WebRTC Signaling
+│   ├── middleware/             # JWT Auth, Role Isolation, Eligibility Gatekeeper
+│   ├── db/                     # PostgreSQL client & schema definitions
+│   └── config/                 # Centralized environment configuration (no hardcoding)
+├── tests/
+│   ├── unit/                   # ATS scoring, eligibility, JWT unit tests
+│   ├── integration/            # API endpoint integration tests
+│   └── security/               # Auth bypass and XSS sanitization tests
+├── scripts/
+│   └── security-scan.js        # Local anti-backdoor static scanner (npm run security:scan)
+├── .github/
+│   ├── workflows/ci.yml        # GitHub Actions CI pipeline
+│   ├── PULL_REQUEST_TEMPLATE.md
+│   ├── SECURITY_CHECKLIST.md
+│   ├── DISCUSSION_TEMPLATE/    # Architecture, Feature Idea, Q&A templates
+│   └── ISSUE_TEMPLATE/         # Bug report and feature request templates
+├── .env.example                # Environment variable template
+├── .prettierrc                 # Code formatting rules
+├── TASKS.md                    # Branch-wise task assignments + collaborator roster
+├── SETUP.md                    # Local development setup guide
+├── ARCHITECTURE.md             # DB schemas, API routes, and data flow
+├── CHANGELOG.md                # Version history
+├── CONTRIBUTING.md             # Git workflow and PR standards
+├── SECURITY.md                 # Security policy and anti-backdoor rules
+└── README.md                   # This file
+```
+
+---
+
 ## ⚙️ Automated CI Pipeline
 
-HireSync uses **GitHub Actions** for continuous integration and automated quality enforcement on every Pull Request to `main`:
+HireSync uses **GitHub Actions** for continuous integration on every Pull Request to `main`:
 
-- ⚡ **Code Quality**: Linter checks and code formatting verification.
-- 🛡️ **Security Audit**: Dependency vulnerability auditing (`npm audit`).
-- 🧪 **Build & Test**: Automated execution of test suites and production build verification.
-- 🚀 **Performance Optimization**: Includes build-level caching and parallel job execution.
+- ⚡ **Code Quality**: Linter and formatting checks.
+- 🛡️ **Security Audit**: Dependency vulnerability scanning (`npm audit`).
+- 🧪 **Build & Test**: Test suite execution and production build verification.
+- 🚀 **Optimized**: Dependency caching and parallel job execution.
 
-For detailed branching rules and PR submission steps, see [CONTRIBUTING.md](CONTRIBUTING.md).
+CI is currently set to `workflow_dispatch` (manual trigger). Re-enable by uncommenting push/PR triggers in [`.github/workflows/ci.yml`](.github/workflows/ci.yml).
 
 ---
 
@@ -130,24 +221,37 @@ For detailed branching rules and PR submission steps, see [CONTRIBUTING.md](CONT
 
 This repository is maintained by multiple developers. All team members must adhere to our contribution workflow:
 
-- **Task Assignment Matrix**: See **[TASKS.md](TASKS.md)** for branch-wise task breakdowns across the **Candidate Portal** and **HR/Company Portal**.
-- **Code Formatting**: Run `npm run format` (Prettier) before committing changes to ensure consistent styling.
-- **No direct commits to `main`**: All work must be conducted on dedicated branches (`feature/*`, `bugfix/*`).
-- See **[CONTRIBUTING.md](CONTRIBUTING.md)** for full instructions and PR templates.
+- 📋 **Task Assignment Matrix**: See **[TASKS.md](TASKS.md)** for branch-wise tasks across **Candidate Portal** and **HR/Company Portal**, including the **Collaborator Branch Ownership Roster**.
+- 🎨 **Code Formatting**: Run `npm run format` (Prettier) before committing.
+- 🛡️ **Security Scan**: Run `npm run security:scan` before committing.
+- 🚫 **No direct commits to `main`**: All work must use dedicated branches (`feature/*`, `bugfix/*`).
+- 📖 Full guide: **[CONTRIBUTING.md](CONTRIBUTING.md)** · Setup guide: **[SETUP.md](SETUP.md)**
 
 ---
 
 ## 🛡️ Security Governance & Anti-Backdoor Controls
 
-HireSync enforces strict security policies to prevent malicious code, master credentials, and backdoor bypass logic:
+HireSync enforces strict security policies:
 
-- **Local Security Scanner**: Run `npm run security:scan` locally before committing code.
-- **Anti-Backdoor Policy**: Zero tolerance for hardcoded master passwords, hidden debug routes, or obfuscated code.
-- **PR Security Checklist**: Reviewers audit PRs using [.github/SECURITY_CHECKLIST.md](.github/SECURITY_CHECKLIST.md).
-- See **[SECURITY.md](SECURITY.md)** for vulnerability reporting procedures and code integrity guidelines.
+- 🔍 **Local Security Scanner**: Run `npm run security:scan` before committing code.
+- 🚫 **Anti-Backdoor Policy**: Zero tolerance for hardcoded master passwords, hidden debug routes, or obfuscated code.
+- ✅ **PR Security Checklist**: Reviewers audit PRs using [`.github/SECURITY_CHECKLIST.md`](.github/SECURITY_CHECKLIST.md).
+- 📄 Full policy: **[SECURITY.md](SECURITY.md)**
+
+---
+
+## 💬 Discussions & Team Communication
+
+Use **GitHub Discussions** to align before starting implementation:
+
+- 🏗️ **[Architecture Proposals](.github/DISCUSSION_TEMPLATE/architecture_proposal.yml)** — Schema, API, or algorithm design changes
+- 💡 **[Feature Ideas](.github/DISCUSSION_TEMPLATE/feature_idea.yml)** — Candidate or HR portal feature proposals
+- ❓ **[Q&A / Help](.github/DISCUSSION_TEMPLATE/question_qa.yml)** — Environment setup or troubleshooting
+
+Guidelines: **[.github/DISCUSSIONS.md](.github/DISCUSSIONS.md)**
 
 ---
 
 ## 📄 License & Conduct
 
-Please read [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) for team interaction rules.
+Please read [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) for team interaction and conduct rules.

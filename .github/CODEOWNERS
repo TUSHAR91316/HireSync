@@ -1,0 +1,72 @@
+# CODEOWNERS
+# GitHub automatically assigns reviewers to Pull Requests based on the code paths modified.
+# Syntax: <pattern> <github-username or team>
+# Replace placeholder names with actual GitHub usernames of your collaborators.
+# Docs: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# =============================================================
+# 🔐 Default Owners (fallback for all files not matched below)
+# =============================================================
+*                               @TUSHAR91316
+
+# =============================================================
+# 🧩 Core Infrastructure — Architecture, Config, DB, Scripts
+# =============================================================
+src/config/                     @TUSHAR91316
+src/db/                         @TUSHAR91316
+scripts/                        @TUSHAR91316
+.github/                        @TUSHAR91316
+.env.example                    @TUSHAR91316
+
+# =============================================================
+# 🔐 feature/auth-and-dashboard
+# Authentication, JWT middleware, and dashboard layouts
+# =============================================================
+src/middleware/                  @collaborator_auth
+src/components/candidate/        @collaborator_auth
+src/components/hr/               @collaborator_auth
+src/components/common/           @collaborator_auth
+
+# =============================================================
+# 🚪 feature/eligibility-gatekeeper
+# Eligibility filtering and Skill Unlock logic
+# =============================================================
+src/middleware/eligibilityGatekeeper.js  @collaborator_gatekeeper
+
+# =============================================================
+# 📄 feature/ats-resume-parser
+# PDF parsing engine and ATS match scoring
+# =============================================================
+src/services/atsParser.js        @collaborator_ats
+
+# =============================================================
+# 🧪 feature/assessment-engine
+# In-app test engine and auto-grading
+# =============================================================
+
+# =============================================================
+# 📹 feature/webrtc-video-interview
+# WebRTC signaling server and video room components
+# =============================================================
+src/services/webrtcSignaling.js  @collaborator_webrtc
+
+# =============================================================
+# ⏱️ feature/sla-decision-engine
+# Redis + BullMQ SLA background worker and email notifications
+# =============================================================
+src/services/slaQueueWorker.js   @collaborator_sla
+src/services/emailService.js     @collaborator_sla
+
+# =============================================================
+# 🧪 Test Suites
+# =============================================================
+tests/                           @TUSHAR91316
+
+# =============================================================
+# 📄 Root Documentation Files (require lead maintainer review)
+# =============================================================
+README.md                        @TUSHAR91316
+ARCHITECTURE.md                  @TUSHAR91316
+SECURITY.md                      @TUSHAR91316
+CONTRIBUTING.md                  @TUSHAR91316
+TASKS.md                         @TUSHAR91316

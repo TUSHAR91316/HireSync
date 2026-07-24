@@ -2,11 +2,17 @@
 
 > 📌 **Instructions for Collaborators**:
 >
-> 1. Find your assigned branch in the matrix below.
-> 2. Checkout your branch (`git checkout <branch-name>`).
-> 3. Implement the specified Candidate or HR/Company interface tasks.
-> 4. Run `npm run format` to auto-format your code before committing.
-> 5. Commit with conventional commit messages (`feat:`, `fix:`, `refactor:`, `docs:`) and push your branch to open a Pull Request against `main`.
+> 1. Set up local environment first: **[SETUP.md](SETUP.md)**
+> 2. Find your assigned branch in the **Collaborator Branch Ownership Roster** below.
+> 3. Checkout your branch: `git checkout <branch-name>`
+> 4. Implement the specified Candidate or HR/Company interface tasks.
+> 5. Run all 3 pre-commit scripts before committing:
+>    ```bash
+>    npm run format          # Auto-format code
+>    npm run security:scan   # Anti-backdoor check
+>    npm run test            # Run test suite
+>    ```
+> 6. Commit using conventional commit messages and open a Pull Request against `main`.
 
 ---
 
@@ -16,6 +22,25 @@ HireSync is structured around two distinct web interface roles:
 
 - 🧑‍💻 **Candidate Portal**: Profile setup, job browsing with eligibility indicators, skill unlock test interface, live pipeline status tracker (`Applied` $\rightarrow$ `Screened` $\rightarrow$ `Assessment` $\rightarrow$ `Interview` $\rightarrow$ `Decision`), and candidate WebRTC video room.
 - 🏢 **HR / Company Portal**: Job creation with restriction filters & SLA parameters, ATS candidate pool dashboard (Tier 1/2/3 breakdown), live scorecards, WebRTC interview room with recruiter evaluation rubric, and SLA alert management.
+
+---
+
+## 👥 Collaborator Branch Ownership Roster
+
+Use this table to assign team members to specific feature and auxiliary branches:
+
+| Branch Name                          | Assigned Collaborator(s) | Primary Module / Target               | Branch Status  |
+| :----------------------------------- | :----------------------- | :------------------------------------ | :------------- |
+| **`feature/auth-and-dashboard`**     | `@collaborator_name`     | JWT Auth, Candidate & HR Dashboards   | 🟡 In Progress |
+| **`feature/eligibility-gatekeeper`** | `@collaborator_name`     | Job Creation Form & Gatekeeper Unlock | 🟡 In Progress |
+| **`feature/ats-resume-parser`**      | `@collaborator_name`     | PDF Resume Parsing & Match Scoring    | 🟡 In Progress |
+| **`feature/assessment-engine`**      | `@collaborator_name`     | Timed Skill Assessment Testing Portal | 🟡 In Progress |
+| **`feature/webrtc-video-interview`** | `@collaborator_name`     | Embedded WebRTC Video & Scorecards    | 🟡 In Progress |
+| **`feature/sla-decision-engine`**    | `@collaborator_name`     | Redis BullMQ SLA Worker & Alerts      | 🟡 In Progress |
+| **`bugfix/general-fixes`**           | `@collaborator_name`     | Bug Fixes & Edge-Case Remediation     | 🟢 Active      |
+| **`refactor/code-optimization`**     | `@collaborator_name`     | Performance & Query Optimization      | 🟢 Active      |
+| **`docs/documentation-updates`**     | `@collaborator_name`     | API Documentation & Diagrams          | 🟢 Active      |
+| **`chore/dev-setup`**                | `@collaborator_name`     | Tooling & Dependencies Setup          | 🟢 Active      |
 
 ---
 

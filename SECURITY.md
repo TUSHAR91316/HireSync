@@ -4,6 +4,15 @@ The **HireSync** team takes security, user privacy, and code integrity extremely
 
 ---
 
+## 📋 Table of Contents
+
+- [Anti-Backdoor & Code Integrity Policy](#️-anti-backdoor--code-integrity-policy)
+- [Local Automated Anti-Backdoor Scanner](#-local-automated-anti-backdoor-scanner)
+- [Scanner Rule Reference](#-scanner-rule-reference)
+- [Reporting a Security Vulnerability](#-reporting-a-security-vulnerability)
+
+---
+
 ## 🛡️ Anti-Backdoor & Code Integrity Policy
 
 To maintain a secure recruitment platform and prevent unauthorized access or malicious code insertion, **all contributors must strictly adhere to the following security rules**:
@@ -22,7 +31,8 @@ To maintain a secure recruitment platform and prevent unauthorized access or mal
 ### 3. Secret & Credential Isolation
 
 - Absolutely **no API keys, database connection strings, JWT signing keys, or passwords** may be committed to the repository.
-- Use `.env` environment variables exclusively. All secret references must be loaded via `process.env.VARIABLE_NAME`.
+- Use `.env` environment variables exclusively. All secret references must be loaded via `process.env.VARIABLE_NAME` — and only accessed through **`src/config/index.js`**, not directly in business logic.
+- Reference: [`.env.example`](.env.example) documents all required environment variables.
 
 ### 4. Mandatory Peer Review & Audit
 
@@ -41,13 +51,30 @@ Before committing code, developers must run the local automated security scanner
 npm run security:scan
 ```
 
-The scan checks for:
+**Expected output on a clean codebase:**
 
-- 🚫 Hardcoded master credentials and authentication bypass variables (`SEC-001`)
-- 🚫 Hardcoded secrets, API keys, and database connection strings (`SEC-002`)
-- 🚫 Dangerous dynamic code execution (`eval()`, `child_process.exec()`) (`SEC-003`)
-- 🚫 Suspicious unauthenticated backdoor endpoints (`SEC-004`)
-- 🚫 Base64-encoded runtime obfuscated code execution (`SEC-005`)
+```
+====================================================
+ 🛡️  HireSync Local Anti-Backdoor & Security Scanner
+====================================================
+
+Scanned 3 file(s).
+
+✅ Security Scan PASSED: No backdoors, secret leaks, or dangerous patterns detected.
+```
+
+---
+
+## 📋 Scanner Rule Reference
+
+| Rule ID   | Severity  | Pattern Detected                                                                       | Action on Detection                       |
+| :-------- | :-------- | :------------------------------------------------------------------------------------- | :---------------------------------------- |
+| `SEC-001` | 🔴 HIGH   | Hardcoded master passwords, `bypassAuth = true`, `skipAuth = true`                     | **FAIL** — must be removed                |
+| `SEC-002` | 🔴 HIGH   | Hardcoded `JWT_SECRET`, `AWS_SECRET_ACCESS_KEY`, raw database URI strings              | **FAIL** — must be removed                |
+| `SEC-003` | 🔴 HIGH   | `eval()`, `new Function()`, `child_process.exec()`                                     | **FAIL** — must be removed                |
+| `SEC-004` | 🔴 HIGH   | Hidden routes: `/api/backdoor`, `/api/debug-shell`, `/api/dump-db`                     | **FAIL** — must be removed                |
+| `SEC-005` | 🟡 MEDIUM | Base64 `atob()` / `Buffer.from(..., 'base64').toString()` executed via eval            | **FAIL** — must be removed                |
+| `SEC-006` | 🟢 LOW    | Hardcoded `localhost:PORT`, `postgres://...`, `redis://localhost` outside `src/config` | **WARN** — must be externalized to config |
 
 ---
 
@@ -55,6 +82,9 @@ The scan checks for:
 
 If you discover a potential security vulnerability or backdoor in HireSync, please report it immediately to the project maintainers:
 
-- **Email**: `security@hiresync.internal` (or reach out directly to the Lead Repository Administrator).
-- **Do NOT create a public GitHub issue** for undisclosed security vulnerabilities.
-- Include detailed steps to reproduce the issue, proof-of-concept payload, and affected module.
+> [!CAUTION]
+> **Do NOT create a public GitHub issue for undisclosed security vulnerabilities.** This could expose active exploits to malicious actors before a fix is deployed.
+
+- **Email**: `security@hiresync.internal` (or reach out directly to the Lead Repository Administrator via private message).
+- Include: detailed steps to reproduce the issue, proof-of-concept payload, and the affected HireSync module or endpoint.
+- Expected response time: within **48 hours** of report submission.

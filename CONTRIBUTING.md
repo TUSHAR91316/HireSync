@@ -6,30 +6,53 @@ Thank you for contributing to HireSync! To maintain code quality, consistency, a
 
 ---
 
+## 📋 Table of Contents
+
+- [First-Time Contributors](#-first-time-contributors)
+- [Git Branching Strategy](#-git-branching-strategy)
+- [Step-by-Step Contribution Workflow](#-step-by-step-contribution-workflow)
+- [Code Quality & Zero-Hardcoding Requirements](#-code-quality--zero-hardcoding-requirements)
+- [Team Communication & GitHub Discussions](#-team-communication--github-discussions)
+
+---
+
+## 👋 First-Time Contributors
+
+If this is your first time contributing, follow these steps to get up and running:
+
+1. **Read the project overview**: [README.md](README.md)
+2. **Set up local development**: [SETUP.md](SETUP.md) — covers Node.js, PostgreSQL, Redis, and `.env` setup.
+3. **Understand the system architecture**: [ARCHITECTURE.md](ARCHITECTURE.md) — DB schemas, API routes, and data flows.
+4. **Find your task**: [TASKS.md](TASKS.md) — Your assigned branch and Candidate / HR interface task list.
+5. **Review security rules**: [SECURITY.md](SECURITY.md) — Anti-backdoor and zero-hardcoding policies.
+6. **Follow this workflow** (steps below).
+
+---
+
 ## 🌲 Git Branching Strategy
 
 Our git branching model isolates features, bug fixes, and refactoring tasks into individual, short-lived branches created from `main`.
 
 ```
-main ------------------------●------------------------●---> (Production Ready)
-      \                     /                        /
-feature/ats-parser --●----●/                        /
-       \                                           /
-bugfix/webrtc-audio --------------●----●----------/
+main ─────────────●─────────────────●──> (Production Ready)
+     \            ↑                 ↑
+      feature/ats-parser ──●──●────/
+       \
+        bugfix/webrtc-audio ──●──●────/
 ```
 
 ### Branch Naming Conventions
 
 All branch names must follow standard prefix conventions using lowercase and hyphens:
 
-| Branch Type       | Naming Prefix           | Example                     | Description                                     |
-| :---------------- | :---------------------- | :-------------------------- | :---------------------------------------------- |
-| **Feature**       | `feature/<short-desc>`  | `feature/ats-resume-parser` | Developing a new core feature or module         |
-| **Bug Fix**       | `bugfix/<short-desc>`   | `bugfix/sla-timer-overflow` | Fixing a bug in existing logic                  |
-| **Refactor**      | `refactor/<short-desc>` | `refactor/auth-middleware`  | Code restructure without changing functionality |
-| **Documentation** | `docs/<short-desc>`     | `docs/update-api-routes`    | Adding or updating documentation                |
-| **Hotfix**        | `hotfix/<short-desc>`   | `hotfix/security-jwt-patch` | Urgent fix needed directly for production issue |
-| **Chore**         | `chore/<short-desc>`    | `chore/update-dependencies` | Tooling, config, dependency updates             |
+| Branch Type       | Naming Prefix           | Example                     | Description                              |
+| :---------------- | :---------------------- | :-------------------------- | :--------------------------------------- |
+| **Feature**       | `feature/<short-desc>`  | `feature/ats-resume-parser` | New core feature or module               |
+| **Bug Fix**       | `bugfix/<short-desc>`   | `bugfix/sla-timer-overflow` | Fix existing logic defect                |
+| **Refactor**      | `refactor/<short-desc>` | `refactor/auth-middleware`  | Code restructure without behavior change |
+| **Documentation** | `docs/<short-desc>`     | `docs/update-api-routes`    | Add or update documentation              |
+| **Hotfix**        | `hotfix/<short-desc>`   | `hotfix/security-jwt-patch` | Urgent production-level patch            |
+| **Chore**         | `chore/<short-desc>`    | `chore/update-dependencies` | Tooling, config, and dependency updates  |
 
 ---
 
@@ -37,89 +60,100 @@ All branch names must follow standard prefix conventions using lowercase and hyp
 
 ### 1. Sync Your Local Repository
 
-Before creating a new branch, always sync your local `main` branch with the latest remote changes:
+Before creating a new branch, always sync with the latest remote `main`:
 
 ```bash
 git checkout main
 git pull origin main
 ```
 
-### 2. Create a Feature Branch
+### 2. Checkout Your Assigned Branch
 
-Create and switch to your dedicated branch:
+Find your assignment in [TASKS.md](TASKS.md) and switch to your branch:
 
 ```bash
-git checkout -b feature/your-feature-name
+git checkout feature/your-assigned-branch
+git pull origin feature/your-assigned-branch
 ```
 
-### 3. Check Tasks, Format Code & Run Security Scan
+### 3. Implement, Format, and Scan
 
-1. Refer to **[TASKS.md](TASKS.md)** to review the detailed Candidate vs. HR interface task list assigned to your branch.
-2. Make your code changes.
-3. Run **code formatting** and **local anti-backdoor security scan** before committing:
-   ```bash
-   # Auto-format all code files
-   npm run format
+1. Make your code changes following the tasks in [TASKS.md](TASKS.md).
+2. Always import all configuration from **`src/config/index.js`** — never hardcode values.
+3. Run pre-commit verification scripts:
 
-   # Run local anti-backdoor & security scan
-   npm run security:scan
-   ```
-4. Review **[SECURITY.md](SECURITY.md)** for anti-backdoor policies (no hardcoded master passwords, no hidden debug routes, no obfuscated code).
+```bash
+# Auto-format all code files
+npm run format
 
-Follow **Conventional Commit Messages** format:
+# Run local anti-backdoor & security scan
+npm run security:scan
 
-- `feat`: A new feature (e.g., `feat(ats): add pdf parsing score algorithm`)
-- `fix`: A bug fix (e.g., `fix(webrtc): resolve peer connection dropped on renegotiate`)
-- `docs`: Documentation changes (e.g., `docs: update setup instructions in README`)
-- `style`: Formatting, missing semi-colons, no code logic change
-- `refactor`: Code change that neither fixes a bug nor adds a feature
-- `test`: Adding missing tests or correcting existing tests
-- `chore`: Build process or auxiliary tools updates
+# Run linter
+npm run lint
 
-Commit example:
+# Run tests
+npm run test
+```
+
+4. Review [SECURITY.md](SECURITY.md) for anti-backdoor policies.
+
+### 4. Commit with Conventional Messages
+
+Follow the **Conventional Commit Messages** format:
+
+| Prefix     | Meaning                   | Example                                        |
+| :--------- | :------------------------ | :--------------------------------------------- |
+| `feat`     | New feature               | `feat(ats): add pdf parsing score algorithm`   |
+| `fix`      | Bug fix                   | `fix(webrtc): resolve peer connection drop`    |
+| `docs`     | Documentation             | `docs: update setup instructions`              |
+| `style`    | Formatting only           | `style: apply prettier formatting`             |
+| `refactor` | Refactor (no bug/feature) | `refactor(auth): simplify middleware chain`    |
+| `test`     | Add/update tests          | `test(sla): add redis worker integration test` |
+| `chore`    | Tooling updates           | `chore: update prettier to v3.0`               |
+| `security` | Security fix              | `security: remove hardcoded JWT secret`        |
 
 ```bash
 git add .
 git commit -m "feat(gatekeeper): add eligibility hard filter validation"
 ```
 
-### 4. Push Branch to Remote Repository
-
-Push your local branch to GitHub / GitLab / Bitbucket:
+### 5. Push to Remote Branch
 
 ```bash
 git push -u origin feature/your-feature-name
 ```
 
-### 5. Create a Pull Request (PR)
+### 6. Open a Pull Request
 
-Open a Pull Request against the `main` branch:
+Open a PR against `main` on GitHub:
 
-1. GitHub will automatically load the [PULL_REQUEST_TEMPLATE](.github/PULL_REQUEST_TEMPLATE.md).
-2. Complete the checklist, select the affected HireSync module, and provide a descriptive summary of changes.
-3. Link relevant issue numbers (e.g., `Closes #12`).
-4. Tag team members for peer code review.
+1. GitHub will auto-load the [PR Template](.github/PULL_REQUEST_TEMPLATE.md).
+2. Fill in the summary, type of change, and affected HireSync module.
+3. Complete the pre-merge checklist (including security scan confirmation).
+4. Link relevant issues (e.g., `Closes #12`).
+5. Tag team members for code review.
 
-### 6. Automated CI Pipeline & Code Review
+### 7. CI Pipeline & Peer Review
 
-Before any PR can be merged into `main`, GitHub Actions runs the **[HireSync CI Pipeline](.github/workflows/ci.yml)** automatically:
+GitHub Actions runs the **[CI Pipeline](.github/workflows/ci.yml)** automatically:
 
-- ⚡ **Job 1: Code Quality**: ESLint, formatting, and syntax validation.
-- 🛡️ **Job 2: Security Audit**: Dependency vulnerability scan (`npm audit`).
-- 🧪 **Job 3: Build & Test**: Executes test suites and validates build outputs.
+| Job                   | Check                           |
+| :-------------------- | :------------------------------ |
+| ⚡ **Code Quality**   | ESLint, formatting verification |
+| 🛡️ **Security Audit** | `npm audit` dependency scan     |
+| 🧪 **Build & Test**   | Test suite + production build   |
 
-**Merge Requirements**:
+**Merge Requirements:**
 
-- [ ] **All CI Pipeline Status Checks** must pass with green checkmarks.
-- [ ] **Peer Review**: At least **1 mandatory review approval** from a team member.
-- [ ] **No Conflicts**: Resolve any merge conflicts with `main` before merging.
+- [ ] All CI status checks pass.
+- [ ] At least **1 peer code review approval**.
+- [ ] PR reviewer completes [Security Checklist](.github/SECURITY_CHECKLIST.md).
+- [ ] No merge conflicts with `main`.
 
-### 7. Merge into `main`
+### 8. Merge into `main` & Clean Up
 
-Once all checks pass and approval is received:
-
-- Select **Squash and Merge** (or **Rebase and Merge**) to keep the `main` branch commit history clean.
-- Delete the remote and local feature branch after merging:
+Select **Squash and Merge** to keep history clean:
 
 ```bash
 git checkout main
@@ -131,24 +165,25 @@ git branch -d feature/your-feature-name
 
 ## 🧪 Code Quality & Zero-Hardcoding Requirements
 
-1. **Zero Hardcoding Policy**: Never hardcode ports (`5000`), URLs (`localhost:3000`), database URIs, secret keys, ATS scoring thresholds (80%), or SLA windows in logic code. Always import parameters from **`src/config/index.js`**.
-2. **Environment Variables**: Use **`.env.example`** to document new environment parameters. Never commit `.env` files or API secrets to Git.
-3. **Verification**: Always verify your code formatting and security scan pass locally before pushing:
+1. **Zero Hardcoding Policy**: Never hardcode ports, URLs, database URIs, JWT secrets, ATS thresholds, or SLA windows. Always import from **`src/config/index.js`**.
+2. **Environment Variables**: Document all new parameters in **`.env.example`**. Never commit `.env` files or secrets.
+3. **Clean Code**: Follow DRY, modular design, and proper error handling.
+4. **Verification checklist before pushing**:
    ```bash
-   # For Node.js / Next.js
-   npm run lint
-   npm run test
-   npm run build
-
-   # For Python (if applicable)
-   pytest
-   flake8
+   npm run format:check   # ✅ Zero formatting errors
+   npm run security:scan  # ✅ Zero security violations
+   npm run lint           # ✅ Zero lint errors
+   npm run test           # ✅ All tests pass
    ```
+
+---
 
 ## 💬 Team Communication & GitHub Discussions
 
-If you have questions about system architecture, database schema designs, ATS algorithms, or API endpoints, use **[GitHub Discussions](.github/DISCUSSIONS.md)** before starting implementation:
+Use **GitHub Discussions** before starting implementation of major changes:
 
 - 🏗️ Open an **[Architecture Proposal](.github/DISCUSSION_TEMPLATE/architecture_proposal.yml)** for schema or API design changes.
-- 💡 Open a **[Feature Idea](.github/DISCUSSION_TEMPLATE/feature_idea.yml)** for candidate or HR portal feature proposals.
-- ❓ Open a **[Question / Q&A](.github/DISCUSSION_TEMPLATE/question_qa.yml)** for environment setup or troubleshooting help.
+- 💡 Open a **[Feature Idea](.github/DISCUSSION_TEMPLATE/feature_idea.yml)** for Candidate or HR portal feature proposals.
+- ❓ Open a **[Question / Q&A](.github/DISCUSSION_TEMPLATE/question_qa.yml)** for environment setup or troubleshooting.
+
+Guidelines: [.github/DISCUSSIONS.md](.github/DISCUSSIONS.md)

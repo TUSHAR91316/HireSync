@@ -29,7 +29,25 @@ PR Reviewers must complete this checklist for every Pull Request before approvin
 
 ---
 
-## 🧪 4. Automated Verification
+## 🔒 4. Zero-Hardcoding Audit (SEC-006)
+
+- [ ] **No Hardcoded Ports**: Verified no raw ports (e.g., `5000`, `3000`) appear in logic files — all loaded from `src/config/index.js`.
+- [ ] **No Hardcoded URLs**: Verified no raw `localhost:PORT` or `postgres://...` / `redis://...` URIs in business logic files.
+- [ ] **Config Imports Only**: All configurable values (ATS thresholds, SLA days, SMTP host) are imported from `src/config/index.js`.
+
+---
+
+## 🧪 5. Automated Verification
 
 - [ ] **Local Security Scan Passed**: `npm run security:scan` executed with zero security violations.
-- [ ] **Linter & Formatting Passed**: `npm run format:check` executed cleanly.
+- [ ] **Linter & Formatting Passed**: `npm run format:check` and `npm run lint` pass cleanly.
+- [ ] **Test Suite Passed**: `npm run test` executed with all tests green.
+
+---
+
+## ✅ Reviewer Sign-Off
+
+> By approving this PR, I confirm I have completed all checklist items above.
+
+**Reviewer:** `@github-username`
+**Date:** YYYY-MM-DD
