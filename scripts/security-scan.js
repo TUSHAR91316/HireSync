@@ -65,6 +65,14 @@ const SECURITY_RULES = [
       /(Buffer\.from\([^)]+,\s*['"]base64['"]\)\.toString\([^)]*\)\s*\)?|eval\s*\(\s*atob\s*\()/i,
     description: 'Detected runtime execution of obfuscated or base64-encoded code strings.',
   },
+  {
+    id: 'SEC-006',
+    name: 'Hardcoded Port / Connection URL in Business Logic',
+    severity: 'LOW',
+    regex: /(http:\/\/localhost:\d{4}|postgres:\/\/[^'"]+|redis:\/\/localhost:\d{4})/i,
+    description:
+      'Detected hardcoded localhost URL or database connection string outside src/config/index.js.',
+  },
 ];
 
 let totalFilesScanned = 0;
@@ -89,6 +97,14 @@ function scanFile(filepath) {
 
   lines.forEach((line, lineIndex) => {
     SECURITY_RULES.forEach((rule) => {
+      // Allow default fallbacks inside config module and env template
+      const normalizedPath = filepath.replace(/\\/g, '/');
+      if (
+        rule.id === 'SEC-006' &&
+        (normalizedPath.includes('src/config/index.js') || normalizedPath.includes('.env.example'))
+      ) {
+        return;
+      }
       if (rule.regex.test(line)) {
         totalViolationsFound++;
         violationsList.push({

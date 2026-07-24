@@ -129,11 +129,11 @@ git branch -d feature/your-feature-name
 
 ---
 
-## 🧪 Code Quality & Testing Requirements
+## 🧪 Code Quality & Zero-Hardcoding Requirements
 
-1. **Clean Code**: Follow clean code principles (DRY, modular components, proper error handling).
-2. **Environment Variables**: Never commit secrets (`.env` files, API keys, database credentials) to git. Use `.env.example` to document required environment keys.
-3. **Verification**: Always verify your code builds and tests pass locally before pushing:
+1. **Zero Hardcoding Policy**: Never hardcode ports (`5000`), URLs (`localhost:3000`), database URIs, secret keys, ATS scoring thresholds (80%), or SLA windows in logic code. Always import parameters from **`src/config/index.js`**.
+2. **Environment Variables**: Use **`.env.example`** to document new environment parameters. Never commit `.env` files or API secrets to Git.
+3. **Verification**: Always verify your code formatting and security scan pass locally before pushing:
    ```bash
    # For Node.js / Next.js
    npm run lint
