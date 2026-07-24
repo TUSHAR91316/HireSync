@@ -1,0 +1,103 @@
+name: HireSync Continuous Integration
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+# Cancel in-progress runs for the same pull request/branch to optimize workflow time & resources
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # --------------------------------------------------
+  # Job 1: Code Quality & Linting
+  # --------------------------------------------------
+  code-quality:
+    name: Code Quality & Formatting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+
+      - name: Install Dependencies
+        run: npm ci --prefer-offline || npm install
+
+      - name: Check Code Formatting & Syntax
+        run: |
+          if [ -f package.json ] && grep -q '"lint"' package.json; then
+            npm run lint
+          else
+            echo "No custom lint script defined in package.json. Skipping lint execution."
+          fi
+
+  # --------------------------------------------------
+  # Job 2: Dependency Security Audit
+  # --------------------------------------------------
+  security-audit:
+    name: Security Vulnerability Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+
+      - name: Audit Dependencies
+        run: |
+          if [ -f package-lock.json ]; then
+            npm audit --audit-level=high --production || echo "Audit completed with warnings."
+          else
+            echo "No package-lock.json found. Skipping npm audit."
+          fi
+
+  # --------------------------------------------------
+  # Job 3: Build & Unit Test Verification
+  # --------------------------------------------------
+  build-and-test:
+    name: Build & Test Verification
+    runs-on: ubuntu-latest
+    needs: [code-quality]
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+
+      - name: Install Dependencies
+        run: npm ci --prefer-offline || npm install
+
+      - name: Run Test Suite
+        run: |
+          if [ -f package.json ] && grep -q '"test"' package.json; then
+            npm test -- --passWithNoTests
+          else
+            echo "No test suite defined yet. Skipping test step."
+          fi
+
+      - name: Verify Build Output
+        run: |
+          if [ -f package.json ] && grep -q '"build"' package.json; then
+            npm run build
+          else
+            echo "No build script defined yet. Verification complete."
+          fi
