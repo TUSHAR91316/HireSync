@@ -1,0 +1,19 @@
+# Build & Output Directories
+dist/
+build/
+out/
+.next/
+
+# Dependencies
+node_modules/
+
+# Package Locks & Generated Files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# OS & Environment Files
+.env
+.env.*
+.DS_Store
+Thumbs.db

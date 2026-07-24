@@ -122,9 +122,10 @@ For detailed branching rules and PR submission steps, see [CONTRIBUTING.md](CONT
 ## 🤝 Development & Contribution Guidelines
 
 This repository is maintained by multiple developers. All team members must adhere to our contribution workflow:
-- **No direct commits to `main`**. All work must be conducted on dedicated branches (`feature/*`, `bugfix/*`).
-- All changes require a **Pull Request (PR)**, passing code checks, and approval before merging into `main`.
-- See [CONTRIBUTING.md](CONTRIBUTING.md) for full instructions and PR templates.
+- **Task Assignment Matrix**: See **[TASKS.md](TASKS.md)** for branch-wise task breakdowns across the **Candidate Portal** and **HR/Company Portal**.
+- **Code Formatting**: Run `npm run format` (Prettier) before committing changes to ensure consistent styling.
+- **No direct commits to `main`**: All work must be conducted on dedicated branches (`feature/*`, `bugfix/*`).
+- See **[CONTRIBUTING.md](CONTRIBUTING.md)** for full instructions and PR templates.
 
 ---
 

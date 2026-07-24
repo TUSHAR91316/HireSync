@@ -48,8 +48,15 @@ Create and switch to your dedicated branch:
 git checkout -b feature/your-feature-name
 ```
 
-### 3. Develop & Commit Changes
-Make your changes locally. Follow **Conventional Commit Messages** format:
+### 3. Check Task Breakdown & Format Code
+1. Refer to **[TASKS.md](TASKS.md)** to review the detailed Candidate vs. HR interface task list assigned to your branch.
+2. Make your code changes.
+3. Run **code formatting** before committing to ensure style consistency across all branches:
+   ```bash
+   npm run format
+   ```
+
+Follow **Conventional Commit Messages** format:
 - `feat`: A new feature (e.g., `feat(ats): add pdf parsing score algorithm`)
 - `fix`: A bug fix (e.g., `fix(webrtc): resolve peer connection dropped on renegotiate`)
 - `docs`: Documentation changes (e.g., `docs: update setup instructions in README`)
