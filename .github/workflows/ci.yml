@@ -1,10 +1,13 @@
 name: HireSync Continuous Integration
 
+# GitHub Actions triggers are TEMPORARILY DISABLED.
+# To re-enable automated CI checks on push/PR, uncomment the push and pull_request sections below.
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  workflow_dispatch: # Allows manual execution from GitHub Actions tab if needed
+  # push:
+  #   branches: [ main ]
+  # pull_request:
+  #   branches: [ main ]
 
 # Cancel in-progress runs for the same pull request/branch to optimize workflow time & resources
 concurrency:
