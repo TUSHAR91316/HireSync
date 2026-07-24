@@ -1,0 +1,33 @@
+title: '[IDEA] '
+labels: ['enhancement', 'idea']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have an idea for a new feature or candidate/HR experience improvement? Pitch it below!
+  - type: input
+    id: feature_title
+    attributes:
+      label: Feature Title
+      description: Brief title of the feature idea.
+      placeholder: 'e.g., Automated Candidate Email Status Updates on SLA Countdown'
+    validations:
+      required: true
+  - type: dropdown
+    id: target_portal
+    attributes:
+      label: Target User Role / Interface
+      options:
+        - '🧑‍💻 Candidate Portal'
+        - '🏢 HR / Company Portal'
+        - 'Both Portals'
+    validations:
+      required: true
+  - type: textarea
+    id: idea_description
+    attributes:
+      label: Feature Description & Value
+      description: What problem does this solve for candidates or recruiters?
+      placeholder: 'Explain the proposed feature, user workflow, and benefits...'
+    validations:
+      required: true

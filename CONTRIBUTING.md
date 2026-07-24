@@ -145,8 +145,10 @@ git branch -d feature/your-feature-name
    flake8
    ```
 
----
+## 💬 Team Communication & GitHub Discussions
 
-## 💬 Team Communication & Help
+If you have questions about system architecture, database schema designs, ATS algorithms, or API endpoints, use **[GitHub Discussions](.github/DISCUSSIONS.md)** before starting implementation:
 
-If you have questions about architecture, schema designs, or API endpoints, reach out to the project team before starting implementation to prevent conflicting designs.
+- 🏗️ Open an **[Architecture Proposal](.github/DISCUSSION_TEMPLATE/architecture_proposal.yml)** for schema or API design changes.
+- 💡 Open a **[Feature Idea](.github/DISCUSSION_TEMPLATE/feature_idea.yml)** for candidate or HR portal feature proposals.
+- ❓ Open a **[Question / Q&A](.github/DISCUSSION_TEMPLATE/question_qa.yml)** for environment setup or troubleshooting help.

@@ -1,0 +1,43 @@
+title: '[ARCHITECTURE] '
+labels: ['architecture', 'discussion']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for proposing an architectural design or schema update for HireSync! Please fill out the sections below to help the team evaluate your proposal.
+  - type: input
+    id: summary
+    attributes:
+      label: Summary / Title
+      description: A short title describing the proposed architectural change.
+      placeholder: 'e.g., Redis SLA Worker Failover & Retry Strategy'
+    validations:
+      required: true
+  - type: dropdown
+    id: affected_pillar
+    attributes:
+      label: Affected HireSync System Pillar
+      options:
+        - 'Upstream Eligibility Gatekeeper'
+        - 'Automated ATS Engine & Resume Parser'
+        - 'Integrated In-App Assessment Engine'
+        - 'Embedded WebRTC Video Interviewing'
+        - 'Recruiter Decision SLA Engine & Redis Queue'
+        - 'Database Schema & Auth Middleware'
+    validations:
+      required: true
+  - type: textarea
+    id: detailed_proposal
+    attributes:
+      label: Technical Proposal Details
+      description: Describe the technical implementation, API endpoint changes, or data models.
+      placeholder: 'Describe the proposed API inputs/outputs, database schema alterations, or service architecture...'
+    validations:
+      required: true
+  - type: textarea
+    id: trade_offs
+    attributes:
+      label: Trade-offs & Alternatives Considered
+      description: What other approaches did you consider and what are the trade-offs of this design?
+    validations:
+      required: false

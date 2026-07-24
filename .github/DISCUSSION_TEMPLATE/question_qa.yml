@@ -1,0 +1,22 @@
+title: '[Q&A] '
+labels: ['question', 'help wanted']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Need help with local environment setup, testing commands, or codebase architecture? Ask here!
+  - type: input
+    id: topic
+    attributes:
+      label: Topic / Question Summary
+      description: What is your question about?
+      placeholder: 'e.g., How to configure local PostgreSQL and Redis for SLA workers?'
+    validations:
+      required: true
+  - type: textarea
+    id: question_details
+    attributes:
+      label: Detailed Question & Context
+      description: Provide context, error logs, or environment details to help team members answer.
+    validations:
+      required: true
