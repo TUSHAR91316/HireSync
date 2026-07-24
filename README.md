@@ -15,26 +15,31 @@ The modern off-campus recruitment ecosystem is broken for both job seekers and h
 ## 🚀 Key Features
 
 ### 1. Upstream Eligibility Gatekeeper
-* **Hard Filters**: Locks application buttons based on experience, graduation batch year, degree stream, and maximum notice period.
-* **Skill-Based Unlock**: Enables candidates who fall slightly below experience thresholds (e.g., 1.5 years vs. 2 years) to attempt timed skill tests to unlock their application.
+
+- **Hard Filters**: Locks application buttons based on experience, graduation batch year, degree stream, and maximum notice period.
+- **Skill-Based Unlock**: Enables candidates who fall slightly below experience thresholds (e.g., 1.5 years vs. 2 years) to attempt timed skill tests to unlock their application.
 
 ### 2. Automated ATS Engine & Resume Parser
-* **PDF Document Parsing**: Extracts structured data (work history, skills, education, contact details) from uploaded PDF resumes.
-* **Algorithmic Match Scoring**: Calculates weighted percentage match scores by comparing job description requirements against candidate profile metrics.
-* **Automated Candidate Tiering**: Categorizes applicants into **Tier-1** (Ideal Match), **Tier-2** (Conditional / Assessment), and **Tier-3** (Ineligible).
+
+- **PDF Document Parsing**: Extracts structured data (work history, skills, education, contact details) from uploaded PDF resumes.
+- **Algorithmic Match Scoring**: Calculates weighted percentage match scores by comparing job description requirements against candidate profile metrics.
+- **Automated Candidate Tiering**: Categorizes applicants into **Tier-1** (Ideal Match), **Tier-2** (Conditional / Assessment), and **Tier-3** (Ineligible).
 
 ### 3. Integrated In-App Assessment & WebRTC Interviewing
-* **Native Testing Engine**: Serves auto-graded multiple-choice and short-form skill tests directly within the candidate dashboard.
-* **Embedded Video Interviewing**: Built-in WebRTC video rooms allow recruiters to conduct live interviews with real-time evaluation scorecards right next to the video frame.
+
+- **Native Testing Engine**: Serves auto-graded multiple-choice and short-form skill tests directly within the candidate dashboard.
+- **Embedded Video Interviewing**: Built-in WebRTC video rooms allow recruiters to conduct live interviews with real-time evaluation scorecards right next to the video frame.
 
 ### 4. Live Application Status Tracking
-* Provides candidates with a real-time, stage-by-stage pipeline tracker:
+
+- Provides candidates with a real-time, stage-by-stage pipeline tracker:
   $$\text{Applied} \longrightarrow \text{Screened} \longrightarrow \text{Assessment} \longrightarrow \text{Interview} \longrightarrow \text{Decision}$$
-* Displays maximum estimated waiting times for each stage for complete transparency.
+- Displays maximum estimated waiting times for each stage for complete transparency.
 
 ### 5. Recruiter Decision SLA Engine
-* Implements a background timer (e.g., 7 days) upon assessment or interview completion.
-* Triggers automated alerts to recruiters as deadlines approach and executes fallback actions (releasing polite rejection/feedback emails) if no manual decision is made before timer expiration.
+
+- Implements a background timer (e.g., 7 days) upon assessment or interview completion.
+- Triggers automated alerts to recruiters as deadlines approach and executes fallback actions (releasing polite rejection/feedback emails) if no manual decision is made before timer expiration.
 
 ---
 
@@ -72,6 +77,7 @@ HireSync is built using a **Three-Tier Web Application Architecture**:
 ```
 
 ### Data Flow Sequence
+
 1. **Recruiter** posts a job with minimum eligibility criteria, evaluation weightages, and SLA window.
 2. **Candidate** views filtered job listings matching their profile parameters.
 3. Candidate submits resume $\rightarrow$ **ATS Engine** parses file and generates a match score.
@@ -83,13 +89,13 @@ HireSync is built using a **Three-Tier Web Application Architecture**:
 
 ## 🛠️ Technology Stack
 
-| Layer | Technologies |
-| :--- | :--- |
-| **Frontend** | React.js / Next.js, Tailwind CSS |
-| **Backend API** | Node.js (Express) / Python (FastAPI) |
-| **Database** | PostgreSQL |
-| **Cache & Queue** | Redis + BullMQ / Celery |
-| **Real-Time Video** | WebRTC API / Agora SDK |
+| Layer               | Technologies                                      |
+| :------------------ | :------------------------------------------------ |
+| **Frontend**        | React.js / Next.js, Tailwind CSS                  |
+| **Backend API**     | Node.js (Express) / Python (FastAPI)              |
+| **Database**        | PostgreSQL                                        |
+| **Cache & Queue**   | Redis + BullMQ / Celery                           |
+| **Real-Time Video** | WebRTC API / Agora SDK                            |
 | **Parsing & Email** | `pdfplumber` / `pdf-parse`, Nodemailer / SendGrid |
 
 ---
@@ -110,6 +116,7 @@ HireSync is built using a **Three-Tier Web Application Architecture**:
 ## ⚙️ Automated CI Pipeline
 
 HireSync uses **GitHub Actions** for continuous integration and automated quality enforcement on every Pull Request to `main`:
+
 - ⚡ **Code Quality**: Linter checks and code formatting verification.
 - 🛡️ **Security Audit**: Dependency vulnerability auditing (`npm audit`).
 - 🧪 **Build & Test**: Automated execution of test suites and production build verification.
@@ -122,6 +129,7 @@ For detailed branching rules and PR submission steps, see [CONTRIBUTING.md](CONT
 ## 🤝 Development & Contribution Guidelines
 
 This repository is maintained by multiple developers. All team members must adhere to our contribution workflow:
+
 - **Task Assignment Matrix**: See **[TASKS.md](TASKS.md)** for branch-wise task breakdowns across the **Candidate Portal** and **HR/Company Portal**.
 - **Code Formatting**: Run `npm run format` (Prettier) before committing changes to ensure consistent styling.
 - **No direct commits to `main`**: All work must be conducted on dedicated branches (`feature/*`, `bugfix/*`).
@@ -132,6 +140,7 @@ This repository is maintained by multiple developers. All team members must adhe
 ## 🛡️ Security Governance & Anti-Backdoor Controls
 
 HireSync enforces strict security policies to prevent malicious code, master credentials, and backdoor bypass logic:
+
 - **Local Security Scanner**: Run `npm run security:scan` locally before committing code.
 - **Anti-Backdoor Policy**: Zero tolerance for hardcoded master passwords, hidden debug routes, or obfuscated code.
 - **PR Security Checklist**: Reviewers audit PRs using [.github/SECURITY_CHECKLIST.md](.github/SECURITY_CHECKLIST.md).

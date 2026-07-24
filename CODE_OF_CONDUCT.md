@@ -11,20 +11,24 @@ We pledge to act and interact in ways that contribute to an open, welcoming, div
 ## 2. Our Standards
 
 ### Positive Behaviors
+
 Examples of behavior that contributes to a positive environment for our project team:
-* Demonstrating empathy and kindness toward other team members.
-* Being respectful of differing opinions, viewpoints, and experiences.
-* Giving and gracefully accepting constructive feedback.
-* Accepting responsibility and apologizing to those affected by our mistakes, and learning from the experience.
-* Focusing on what is best not just for us individually, but for the overall project team and candidate experience.
+
+- Demonstrating empathy and kindness toward other team members.
+- Being respectful of differing opinions, viewpoints, and experiences.
+- Giving and gracefully accepting constructive feedback.
+- Accepting responsibility and apologizing to those affected by our mistakes, and learning from the experience.
+- Focusing on what is best not just for us individually, but for the overall project team and candidate experience.
 
 ### Unacceptable Behaviors
+
 Examples of unacceptable behavior include:
-* The use of sexualized language or imagery, and sexual attention or advances of any kind.
-* Trolling, insulting or derogatory comments, and personal or political attacks.
-* Public or private harassment.
-* Publishing others' private information, such as a physical or email address, without explicit permission.
-* Other conduct which could reasonably be considered inappropriate in a professional setting.
+
+- The use of sexualized language or imagery, and sexual attention or advances of any kind.
+- Trolling, insulting or derogatory comments, and personal or political attacks.
+- Public or private harassment.
+- Publishing others' private information, such as a physical or email address, without explicit permission.
+- Other conduct which could reasonably be considered inappropriate in a professional setting.
 
 ---
 

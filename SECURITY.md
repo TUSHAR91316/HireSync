@@ -9,19 +9,23 @@ The **HireSync** team takes security, user privacy, and code integrity extremely
 To maintain a secure recruitment platform and prevent unauthorized access or malicious code insertion, **all contributors must strictly adhere to the following security rules**:
 
 ### 1. Zero Tolerance for Authentication Bypasses & Master Passwords
+
 - **No Hardcoded Master Passwords**: Hardcoding fallback passwords (e.g., `if (password === "admin_secret") return true;`) is strictly forbidden.
 - **No Role Bypasses**: Bypassing role-based authorization checks (`CANDIDATE` vs. `RECRUITER`) using hidden flags or query parameters is prohibited.
 - **No Hidden Debug Endpoints**: Creating unauthenticated routes for dumping database records, bypassing authentication, or executing shell commands (e.g., `/api/backdoor`, `/api/debug/dump`) is prohibited.
 
 ### 2. Zero Tolerance for Code Obfuscation
+
 - All pull requests (PRs) must consist of clear, un-obfuscated, human-readable source code.
 - Base64-encoded logic, minified code snippets, or runtime string evaluation (`eval()`, `new Function()`, `atob()`) will result in immediate PR rejection.
 
 ### 3. Secret & Credential Isolation
+
 - Absolutely **no API keys, database connection strings, JWT signing keys, or passwords** may be committed to the repository.
 - Use `.env` environment variables exclusively. All secret references must be loaded via `process.env.VARIABLE_NAME`.
 
 ### 4. Mandatory Peer Review & Audit
+
 - All PRs targeting `main` require a minimum of **2 peer code review approvals**.
 - Self-merging of PRs is disabled on protected branches.
 - PR reviewers must complete the **[Security Review Checklist](.github/SECURITY_CHECKLIST.md)** prior to approving any code.
@@ -38,6 +42,7 @@ npm run security:scan
 ```
 
 The scan checks for:
+
 - 🚫 Hardcoded master credentials and authentication bypass variables (`SEC-001`)
 - 🚫 Hardcoded secrets, API keys, and database connection strings (`SEC-002`)
 - 🚫 Dangerous dynamic code execution (`eval()`, `child_process.exec()`) (`SEC-003`)
