@@ -48,13 +48,18 @@ Create and switch to your dedicated branch:
 git checkout -b feature/your-feature-name
 ```
 
-### 3. Check Task Breakdown & Format Code
+### 3. Check Tasks, Format Code & Run Security Scan
 1. Refer to **[TASKS.md](TASKS.md)** to review the detailed Candidate vs. HR interface task list assigned to your branch.
 2. Make your code changes.
-3. Run **code formatting** before committing to ensure style consistency across all branches:
+3. Run **code formatting** and **local anti-backdoor security scan** before committing:
    ```bash
+   # Auto-format all code files
    npm run format
+
+   # Run local anti-backdoor & security scan
+   npm run security:scan
    ```
+4. Review **[SECURITY.md](SECURITY.md)** for anti-backdoor policies (no hardcoded master passwords, no hidden debug routes, no obfuscated code).
 
 Follow **Conventional Commit Messages** format:
 - `feat`: A new feature (e.g., `feat(ats): add pdf parsing score algorithm`)

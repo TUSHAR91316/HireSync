@@ -129,6 +129,16 @@ This repository is maintained by multiple developers. All team members must adhe
 
 ---
 
+## 🛡️ Security Governance & Anti-Backdoor Controls
+
+HireSync enforces strict security policies to prevent malicious code, master credentials, and backdoor bypass logic:
+- **Local Security Scanner**: Run `npm run security:scan` locally before committing code.
+- **Anti-Backdoor Policy**: Zero tolerance for hardcoded master passwords, hidden debug routes, or obfuscated code.
+- **PR Security Checklist**: Reviewers audit PRs using [.github/SECURITY_CHECKLIST.md](.github/SECURITY_CHECKLIST.md).
+- See **[SECURITY.md](SECURITY.md)** for vulnerability reporting procedures and code integrity guidelines.
+
+---
+
 ## 📄 License & Conduct
 
 Please read [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) for team interaction rules.
