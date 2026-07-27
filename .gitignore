@@ -46,3 +46,15 @@ Thumbs.db
 *.njsproj
 *.sln
 *.sw?
+
+# Resume Upload Storage (local dev only — actual files should never be committed)
+uploads/resumes/*
+# Keep the directory placeholder tracked
+!uploads/resumes/.gitkeep
+
+# Test Fixtures (PDF samples used in test suites — committed intentionally)
+# tests/fixtures/*.pdf  ← do NOT ignore these
+
+# Coverage Reports
+coverage/
+.nyc_output/
