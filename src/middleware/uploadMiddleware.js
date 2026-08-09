@@ -14,7 +14,7 @@
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-const { v4: uuidv4 } = require('uuid');
+const crypto = require('crypto');
 const config = require('../config');
 
 // Ensure the local upload directory exists at startup
@@ -32,7 +32,7 @@ const localStorage = multer.diskStorage({
   },
   filename: (_req, _file, cb) => {
     // Always use a UUID filename — never trust or preserve original filename
-    const safeFilename = `${uuidv4()}.pdf`;
+    const safeFilename = `${crypto.randomUUID()}.pdf`;
     cb(null, safeFilename);
   },
 });
