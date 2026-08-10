@@ -1,3 +1,6 @@
+<!-- ✅ HOW TO USE CHECKBOXES: The boxes below are NOT clickable in the "Preview" tab.
+     Submit the PR first → then click each checkbox directly on the PR page to tick it. -->
+
 ## 📌 Pull Request Description
 
 ### Summary of Changes
@@ -28,12 +31,35 @@ Provide a clear, concise summary of the changes introduced in this PR.
 
 ## 🧪 Verification & Testing
 
-### How Was This Tested?
+### ✅ Automated Test Results
 
-Describe the testing procedures performed:
+Paste the output of your local test run here:
 
-1. ...
-2. ...
+```
+# Run this before raising the PR:
+npm run test
+
+# Expected output:
+Test Suites: X passed, X total
+Tests:       X passed, X total
+```
+
+### 🔬 Manual Testing Steps
+
+Describe **exactly** what you manually tested. Be specific — not generic:
+
+| Step | What You Did | Expected Result | Actual Result |
+| :--- | :--- | :--- | :--- |
+| 1 | e.g. Uploaded a valid PDF resume via `ResumeUploader` | Parse result returned with skills extracted | ✅ Pass / ❌ Fail |
+| 2 | e.g. Uploaded a `.exe` file renamed to `.pdf` | Rejected with `INVALID_FILE_TYPE` error | ✅ Pass / ❌ Fail |
+| 3 | e.g. Submitted a PR with white-font keywords in resume | Anti-gaming flag triggered (`SEC-AG-001`) | ✅ Pass / ❌ Fail |
+
+### 🛡️ Security & Format Verification Output
+
+```
+npm run security:scan    → ✅ PASSED / ❌ FAILED (paste result)
+npm run format:check     → ✅ PASSED / ❌ FAILED (paste result)
+```
 
 ### Pre-Merge Checklist
 
