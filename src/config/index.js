@@ -60,6 +60,21 @@ const config = {
       experience: parseFloat(process.env.ATS_WEIGHT_EXPERIENCE) || 0.3,
       education: parseFloat(process.env.ATS_WEIGHT_EDUCATION) || 0.2,
     },
+    // Resume File Upload Parameters
+    upload: {
+      maxFileSizeBytes: parseInt(process.env.RESUME_MAX_FILE_SIZE_BYTES, 10) || 5242880, // 5 MB
+      allowedMimeTypes: (process.env.RESUME_ALLOWED_MIME_TYPES || 'application/pdf').split(','),
+      storageBackend: process.env.STORAGE_BACKEND || 'local', // 'local' | 's3'
+      localUploadPath: process.env.LOCAL_UPLOAD_PATH || 'uploads/resumes',
+      s3Bucket: process.env.S3_BUCKET_NAME || '',
+      s3Region: process.env.S3_REGION || 'ap-south-1',
+    },
+    // Anti-Gaming & ATS Manipulation Defence Parameters
+    antiGaming: {
+      minFontSizePt: parseInt(process.env.ATS_MIN_FONT_SIZE_PT, 10) || 4,
+      maxSkillCount: parseInt(process.env.ATS_MAX_SKILL_COUNT, 10) || 35,
+      keywordDensityRatioThreshold: parseFloat(process.env.ATS_KEYWORD_DENSITY_THRESHOLD) || 0.25,
+    },
   },
 
   // Candidate Upstream Gatekeeper & Skill Unlock
