@@ -29,6 +29,12 @@ const config = {
     saltRounds: parseInt(process.env.SALT_ROUNDS, 10) || 10,
   },
 
+  // Auth Policy
+  auth: {
+    passwordMinLength: parseInt(process.env.PASSWORD_MIN_LENGTH, 10) || 8,
+    resetTokenExpiryMinutes: parseInt(process.env.RESET_TOKEN_EXPIRY_MINUTES, 10) || 60,
+  },
+
   // Database Connection Parameters
   db: {
     url:
@@ -49,6 +55,17 @@ const config = {
     port: parseInt(process.env.REDIS_PORT, 10) || 6379,
     password: process.env.REDIS_PASSWORD || '',
     url: process.env.REDIS_URL || 'redis://localhost:6379',
+  },
+
+  // Email / SMTP (for Forgot Password transactional email)
+  mail: {
+    host: process.env.SMTP_HOST || 'smtp.gmail.com',
+    port: parseInt(process.env.SMTP_PORT, 10) || 587,
+    secure: process.env.SMTP_SECURE === 'true',
+    user: process.env.SMTP_USER || '',
+    pass: process.env.SMTP_PASS || '',
+    from: process.env.MAIL_FROM || 'HireSync <noreply@hiresync.app>',
+    appBaseUrl: process.env.APP_BASE_URL || 'http://localhost:3000',
   },
 
   // ATS Resume Parser Thresholds & Scoring Weights

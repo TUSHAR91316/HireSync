@@ -4,9 +4,9 @@
   "description": "Unified Off-Campus Recruitment System & Automated ATS Engine",
   "main": "index.js",
   "scripts": {
-    "dev": "echo \"Starting HireSync development server...\" && exit 0",
+    "dev": "node src/server.js",
     "build": "echo \"Building HireSync application...\" && exit 0",
-    "start": "echo \"Starting HireSync production server...\" && exit 0",
+    "start": "node src/server.js",
     "test": "npx jest",
     "lint": "echo \"Running code linting...\" && exit 0",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,md}\"",
@@ -29,8 +29,15 @@
     "prettier": "^3.0.0"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-validator": "^7.3.2",
+    "jsonwebtoken": "^9.0.3",
     "multer": "^2.2.0",
+    "nodemailer": "^9.0.6",
     "pdf-parse": "^2.4.5",
+    "pg": "^8.23.0",
     "uuid": "^14.0.1"
   }
 }

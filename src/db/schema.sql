@@ -129,3 +129,24 @@ CREATE INDEX IF NOT EXISTS idx_jobs_recruiter_id          ON jobs(recruiter_id);
 CREATE INDEX IF NOT EXISTS idx_jobs_is_active             ON jobs(is_active);
 CREATE INDEX IF NOT EXISTS idx_sla_timers_expires_at      ON sla_timers(expires_at);
 CREATE INDEX IF NOT EXISTS idx_sla_timers_status          ON sla_timers(status);
+
+-- -------------------------------------------------------------
+-- Table: password_reset_tokens
+-- One-time UUID tokens for the forgot-password email flow.
+-- Each token expires after RESET_TOKEN_EXPIRY_MINUTES (default 60 min).
+-- Tokens are marked used=TRUE after successful password reset
+-- to prevent re-use.
+-- -------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS password_reset_tokens (
+    id          UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id     UUID        NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    token       UUID        NOT NULL UNIQUE DEFAULT gen_random_uuid(),
+    expires_at  TIMESTAMPTZ NOT NULL,
+    used        BOOLEAN     NOT NULL DEFAULT FALSE,
+    created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_reset_tokens_token      ON password_reset_tokens(token);
+CREATE INDEX IF NOT EXISTS idx_reset_tokens_user_id    ON password_reset_tokens(user_id);
+CREATE INDEX IF NOT EXISTS idx_reset_tokens_expires_at ON password_reset_tokens(expires_at);
+
