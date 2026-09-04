@@ -11,6 +11,8 @@ const { connectWithFailFast } = require('./db/pool');
 const authRoutes = require('./routes/authRoutes');
 const profileRoutes = require('./routes/profileRoutes');
 const resumeRoutes = require('./routes/resumeRoutes');
+const jobRoutes = require('./routes/jobRoutes');
+const applicationRoutes = require('./routes/applicationRoutes');
 
 const path = require('path');
 const app = express();
@@ -47,6 +49,8 @@ app.get('/health', (_req, res) =>
 app.use('/api/auth', authRoutes);
 app.use('/api', profileRoutes);
 app.use('/api/candidate/resume', resumeRoutes);
+app.use('/api', jobRoutes);
+app.use('/api', applicationRoutes);
 
 // ─────────────────────────────────────────────
 // Global Error Handler
