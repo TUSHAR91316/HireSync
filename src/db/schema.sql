@@ -68,15 +68,42 @@ CREATE TABLE IF NOT EXISTS jobs (
     recruiter_id            UUID          NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     title                   VARCHAR(255)  NOT NULL,
     description             TEXT,
+    department              VARCHAR(100),
+    location                VARCHAR(100),
+    workplace_type          VARCHAR(50)   DEFAULT 'Remote', -- 'Remote' | 'Hybrid' | 'Onsite'
+    salary_range            VARCHAR(100),
     min_experience          DECIMAL(4,1)  NOT NULL,
     allowed_batch_years     INT[],        -- e.g. {2022, 2023, 2024}
     allowed_degrees         TEXT[],       -- e.g. {"Computer Science", "ECE"}
     max_notice_period_days  INT,
+    required_skills         TEXT[],       -- e.g. {"React", "Node.js", "PostgreSQL"}
     sla_days                INT           NOT NULL DEFAULT 7,
     is_active               BOOLEAN       NOT NULL DEFAULT TRUE,
     created_at              TIMESTAMPTZ   NOT NULL DEFAULT NOW(),
     updated_at              TIMESTAMPTZ   NOT NULL DEFAULT NOW()
 );
+
+-- -------------------------------------------------------------
+-- Table: skill_unlocks
+-- Records candidate timed skill challenge results, anti-cheating
+-- telemetry (tab switches), and AI content detection flags.
+-- -------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS skill_unlocks (
+    id                      UUID          PRIMARY KEY DEFAULT gen_random_uuid(),
+    candidate_id            UUID          NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    job_id                  UUID          NOT NULL REFERENCES jobs(id) ON DELETE CASCADE,
+    score                   DECIMAL(5,2)  NOT NULL,
+    passed                  BOOLEAN       NOT NULL,
+    tab_switch_count        INT           NOT NULL DEFAULT 0,
+    ai_confidence           DECIMAL(5,2)  NOT NULL DEFAULT 0.00,
+    disqualified            BOOLEAN       NOT NULL DEFAULT FALSE,
+    disqualification_reason VARCHAR(255),
+    started_at              TIMESTAMPTZ   NOT NULL,
+    completed_at            TIMESTAMPTZ   NOT NULL DEFAULT NOW(),
+    UNIQUE (candidate_id, job_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_skill_unlocks_candidate_job ON skill_unlocks(candidate_id, job_id);
 
 -- -------------------------------------------------------------
 -- Table: applications

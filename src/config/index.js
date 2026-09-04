@@ -57,15 +57,17 @@ const config = {
     url: process.env.REDIS_URL || 'redis://localhost:6379',
   },
 
-  // Email / SMTP (for Forgot Password transactional email)
+  // Email / SMTP (for Forgot Password transactional email and SLA notifications)
   mail: {
-    host: process.env.SMTP_HOST || 'smtp.gmail.com',
+    host: process.env.SMTP_HOST || 'smtp.mailtrap.io',
     port: parseInt(process.env.SMTP_PORT, 10) || 587,
     secure: process.env.SMTP_SECURE === 'true',
     user: process.env.SMTP_USER || '',
     pass: process.env.SMTP_PASS || '',
     from: process.env.MAIL_FROM || 'HireSync <noreply@hiresync.app>',
+    fromName: process.env.MAIL_FROM_NAME || 'HireSync Automated SLA Engine',
     appBaseUrl: process.env.APP_BASE_URL || 'http://localhost:3000',
+    sendgridApiKey: process.env.SENDGRID_API_KEY || '',
   },
 
   // ATS Resume Parser Thresholds & Scoring Weights
@@ -99,6 +101,15 @@ const config = {
     skillUnlockBufferPercentage: parseFloat(process.env.SKILL_UNLOCK_BUFFER_PERCENTAGE) || 0.15,
     skillUnlockTestDurationMinutes:
       parseInt(process.env.SKILL_UNLOCK_TEST_DURATION_MINUTES, 10) || 15,
+    passingScorePercentage: parseFloat(process.env.SKILL_UNLOCK_PASSING_SCORE) || 70.0,
+  },
+
+  // Anti-Cheating & AI Detection Settings
+  antiCheating: {
+    maxTabSwitchesAllowed: parseInt(process.env.MAX_TAB_SWITCHES, 10) || 2,
+    aiDetectionThreshold: parseFloat(process.env.AI_DETECTION_THRESHOLD) || 0.75, // 75%
+    testGracePeriodSeconds: parseInt(process.env.TEST_GRACE_PERIOD_SECONDS, 10) || 30,
+    geminiApiKey: process.env.GEMINI_API_KEY || '',
   },
 
   // Recruiter Decision SLA Engine
@@ -114,17 +125,6 @@ const config = {
     turnServer: process.env.WEBRTC_TURN_SERVER || '',
     turnUsername: process.env.WEBRTC_TURN_USERNAME || '',
     turnCredential: process.env.WEBRTC_TURN_CREDENTIAL || '',
-  },
-
-  // Email Transactional Service
-  mail: {
-    smtpHost: process.env.SMTP_HOST || 'smtp.mailtrap.io',
-    smtpPort: parseInt(process.env.SMTP_PORT, 10) || 2525,
-    smtpUser: process.env.SMTP_USER || '',
-    smtpPass: process.env.SMTP_PASS || '',
-    fromAddress: process.env.MAIL_FROM_ADDRESS || 'no-reply@hiresync.com',
-    fromName: process.env.MAIL_FROM_NAME || 'HireSync Automated SLA Engine',
-    sendgridApiKey: process.env.SENDGRID_API_KEY || '',
   },
 };
 
