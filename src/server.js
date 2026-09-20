@@ -13,6 +13,7 @@ const profileRoutes = require('./routes/profileRoutes');
 const resumeRoutes = require('./routes/resumeRoutes');
 const jobRoutes = require('./routes/jobRoutes');
 const applicationRoutes = require('./routes/applicationRoutes');
+const assessmentRoutes = require('./routes/assessmentRoutes');
 
 const path = require('path');
 const app = express();
@@ -51,6 +52,7 @@ app.use('/api', profileRoutes);
 app.use('/api/candidate/resume', resumeRoutes);
 app.use('/api', jobRoutes);
 app.use('/api', applicationRoutes);
+app.use('/api', assessmentRoutes);
 
 // ─────────────────────────────────────────────
 // Global Error Handler

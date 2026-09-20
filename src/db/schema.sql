@@ -123,16 +123,43 @@ CREATE TABLE IF NOT EXISTS applications (
 );
 
 -- -------------------------------------------------------------
+-- Table: assessments
+-- Recruiter-configured skill assessments associated with a job.
+-- -------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS assessments (
+    id                  UUID          PRIMARY KEY DEFAULT gen_random_uuid(),
+    job_id              UUID          NOT NULL REFERENCES jobs(id) ON DELETE CASCADE UNIQUE,
+    title               VARCHAR(255)  NOT NULL,
+    description         TEXT,
+    duration_minutes    INT           NOT NULL DEFAULT 30,
+    passing_score       DECIMAL(5,2)  NOT NULL DEFAULT 75.00,
+    questions           JSONB         NOT NULL DEFAULT '[]',
+    created_at          TIMESTAMPTZ   NOT NULL DEFAULT NOW(),
+    updated_at          TIMESTAMPTZ   NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_assessments_job_id ON assessments(job_id);
+
+-- -------------------------------------------------------------
 -- Table: test_scores
--- Stores in-app assessment results for a given application.
+-- Stores in-app assessment results and question-by-question scorecard.
 -- -------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS test_scores (
-    id              UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
-    application_id  UUID        NOT NULL REFERENCES applications(id) ON DELETE CASCADE,
-    score           DECIMAL(5,2) NOT NULL,  -- Score percentage: 0.00 to 100.00
-    passed          BOOLEAN     NOT NULL,
-    completed_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    id                  UUID          PRIMARY KEY DEFAULT gen_random_uuid(),
+    application_id      UUID          NOT NULL REFERENCES applications(id) ON DELETE CASCADE,
+    candidate_id        UUID          REFERENCES users(id) ON DELETE CASCADE,
+    job_id              UUID          REFERENCES jobs(id) ON DELETE CASCADE,
+    score               DECIMAL(5,2)  NOT NULL,  -- Score percentage: 0.00 to 100.00
+    passed              BOOLEAN       NOT NULL,
+    time_taken_seconds  INT           NOT NULL DEFAULT 0,
+    question_breakdown  JSONB,
+    status              VARCHAR(50)   NOT NULL DEFAULT 'COMPLETED',
+    completed_at        TIMESTAMPTZ   NOT NULL DEFAULT NOW()
 );
+
+CREATE INDEX IF NOT EXISTS idx_test_scores_application_id ON test_scores(application_id);
+CREATE INDEX IF NOT EXISTS idx_test_scores_candidate_id   ON test_scores(candidate_id);
+CREATE INDEX IF NOT EXISTS idx_test_scores_job_id         ON test_scores(job_id);
 
 -- -------------------------------------------------------------
 -- Table: sla_timers

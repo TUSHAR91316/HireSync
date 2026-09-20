@@ -112,6 +112,14 @@ const config = {
     geminiApiKey: process.env.GEMINI_API_KEY || '',
   },
 
+  // Native In-App Assessment Engine
+  assessment: {
+    defaultDurationMinutes: parseInt(process.env.ASSESSMENT_DEFAULT_DURATION_MINUTES, 10) || 30,
+    defaultPassingScore: parseFloat(process.env.ASSESSMENT_DEFAULT_PASSING_SCORE) || 75.0,
+    allowRetakes: process.env.ASSESSMENT_ALLOW_RETAKES === 'true',
+    maxQuestions: parseInt(process.env.ASSESSMENT_MAX_QUESTIONS, 10) || 10,
+  },
+
   // Recruiter Decision SLA Engine
   sla: {
     defaultSlaDays: parseInt(process.env.DEFAULT_SLA_DAYS, 10) || 7,
